@@ -13,13 +13,14 @@ html,body{
 }
 .content{
   @include bai;
+  display:flex;
 }
 
 /*-----*/
 .stage{
   position:$pos-re;
   width:$w;
-  height:680px;
+  height:780px;
 
 }
 /*-----*/
