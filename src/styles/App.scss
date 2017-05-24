@@ -1,0 +1,48 @@
+$w:100%;
+$pos-re:relative;
+$pos-ab:absolute;
+$pos-fi:fixed;
+@mixin bai {
+    width:$w;
+    height:$w;
+}
+
+html,body{
+  @include bai;
+  background-color:#f8f8f8;
+}
+.content{
+  @include bai;
+}
+
+/*-----*/
+.stage{
+  position:$pos-re;
+  width:$w;
+  height:680px;
+
+}
+/*-----*/
+
+
+
+/*-----*/
+.img-sec{
+  position:$pos-re;
+  @include bai;
+  overflow:hidden;
+  background-color:#ddd;
+}
+/*-----*/
+
+
+
+/*-----*/
+.contorller-nav{
+  position:$pos-ab;
+  left:0;
+  bottom:30px;
+  width:100%;
+  text-align:center;
+}
+/*-----*/
