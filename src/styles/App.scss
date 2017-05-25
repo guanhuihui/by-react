@@ -2,6 +2,9 @@ $w:100%;
 $pos-re:relative;
 $pos-ab:absolute;
 $pos-fi:fixed;
+*{
+  margin:0;padding:0;list-style:none;
+}
 @mixin bai {
     width:$w;
     height:$w;
@@ -33,6 +36,29 @@ html,body{
   @include bai;
   overflow:hidden;
   background-color:#ddd;
+  @at-root{
+    .img-figure{
+      position:$pos-ab;
+      width:320px;
+      height:340px;
+      padding:40px;
+      margin:0;
+      background-color:#fff;
+      box-sizing:border-box;
+      img{
+        width:100%;border-radius:8px;
+        box-shadow:1px 0 50px rgba(0,0,0,.5);
+      }
+    }
+    figcaption{
+      text-align:center;
+      .img-title{
+        margin:20px 0 0 0;
+        color:#a7a0a2;
+        font-size:16px;
+      }
+    }
+  }
 }
 /*-----*/
 
@@ -45,5 +71,6 @@ html,body{
   bottom:30px;
   width:100%;
   text-align:center;
+  z-index:101;
 }
 /*-----*/

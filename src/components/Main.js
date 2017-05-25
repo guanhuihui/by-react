@@ -21,14 +21,40 @@ let imageDatas = (function(ImageDateArr){
 
 })(ImageDate);
 
+var ImgFigure = React.createClass({
+  render() {
+    return (
+      <figure className="img-figure">
+        <img src={this.props.data.imageUrl} alt={this.props.data.title}/>
+        <figcaption>
+          <h2 className="img-title">{this.props.data.desc}</h2>
+        </figcaption>
+      </figure>
+    )
+  }
+})
+
 class AppComponent extends React.Component {
   render() {
+    var contorllerUnits = [],
+        imgFigures = [];
+
+        imageDatas.forEach((value, index) =>{
+
+          console.log(value);
+          imgFigures.push(<ImgFigure data = {value} key={'imgFigures'+index}/>);
+
+        });
+
+
+
     return (
       <section className="stage">
       	<section className="img-sec">
-      	
+      	   {imgFigures}
       	</section>
       	<nav className="contorller-nav">
+          {contorllerUnits}
       	</nav>
       </section>
     );
