@@ -1,134 +1,165 @@
-require('normalize.css/normalize.css');
-require('styles/App.scss');
+
+require('styles/App.css');
 
 import React from 'react';
+import { Router, Route, hashHistory } from 'react-router';
 
-//获取图片相关数据
-let ImageDate = require('../data/imageDatas.json');
 
-let ImageUrl = require('../images/yeoman.png');
+// let arr = (function genImageURL() {
+//   var width, height, largeHeader, canvas, ctx, circles, target, animateHeader = true;
 
-//利用自执行函数，将图片名信息转成图片的url路径信息
+//   // Main
+//   initHeader();
+//   addListeners();
 
-let imageDatas = (function(ImageDateArr){
+//   function initHeader() {
+//       width = window.innerWidth;
+//       height = window.innerHeight;
+//       target = {x: 0, y: height};
 
-	for(var i = 0,j = ImageDateArr.length;i<j;i++){
-		var singImageData = ImageDateArr[i];
-		singImageData.imageUrl = require('../images/'+singImageData.fileName);
-		ImageDateArr[i] = singImageData;
-	}
-	return ImageDateArr;
+//       largeHeader = document.getElementById('large-header');
+//       largeHeader.style.height = height+'px';
 
-})(ImageDate);
+//       canvas = document.getElementById('demo-canvas');
+//       canvas.width = width;
+//       canvas.height = height;
+//       ctx = canvas.getContext('2d');
 
-var ImgFigure = React.createClass({
-  render() {
-    return (
-      <figure className="img-figure">
-        <img src={this.props.data.imageUrl} alt={this.props.data.title}/>
-        <figcaption>
-          <h2 className="img-title">{this.props.data.desc}</h2>
-        </figcaption>
-      </figure>
-    )
-  }
-})
+//       // create particles
+//       circles = [];
+//       for(var x = 0; x < width*0.5; x++) {
+//           var c = new Circle();
+//           circles.push(c);
+//       }
+//       animate();
+//   }
+
+//   // Event handling
+//   function addListeners() {
+//       window.addEventListener('scroll', scrollCheck);
+//       window.addEventListener('resize', resize);
+//   }
+
+//   function scrollCheck() {
+//       if(document.body.scrollTop > height) animateHeader = false;
+//       else animateHeader = true;
+//   }
+
+//   function resize() {
+//       width = window.innerWidth;
+//       height = window.innerHeight;
+//       largeHeader.style.height = height+'px';
+//       canvas.width = width;
+//       canvas.height = height;
+//   }
+
+//   function animate() {
+//       if(animateHeader) {
+//           ctx.clearRect(0,0,width,height);
+//           for(var i in circles) {
+//               circles[i].draw();
+//           }
+//       }
+//       requestAnimationFrame(animate);
+//   }
+
+//   // Canvas manipulation
+//   function Circle() {
+//       var _this = this;
+
+//       // constructor
+//       (function() {
+//           _this.pos = {};
+//           init();
+//           console.log(_this);
+//       })();
+
+//       function init() {
+//           _this.pos.x = Math.random()*width;
+//           _this.pos.y = height+Math.random()*100;
+//           _this.alpha = 0.1+Math.random()*0.3;
+//           _this.scale = 0.1+Math.random()*0.3;
+//           _this.velocity = Math.random();
+//       }
+
+//       this.draw = function() {
+//           if(_this.alpha <= 0) {
+//               init();
+//           }
+//           _this.pos.y -= _this.velocity;
+//           _this.alpha -= 0.0005;
+//           ctx.beginPath();
+//           ctx.arc(_this.pos.x, _this.pos.y, _this.scale*10, 0, 2 * Math.PI, false);
+//           ctx.fillStyle = 'rgba(255,255,255,'+ _this.alpha+')';
+//           ctx.fill();
+//       };
+//   }
+
+//   return console.log(11111111111);
+// })();
+
 
 var GalleryByReactApp = React.createClass({
-   Constant: {
-    conterPos:{
-      left:0,
-      right:0
-    },
-    hPosRange: {//水平方向的取值范围
-      leftSecX:[0,0],
-      rightSecX:[0,0],
-      y:[0,0]
-    },
-    vPosRange: {//垂直方向的取值范围
-      x:[0,0],
-      topY:[0,0]
-    } 
-  },
-  rearrange:function(centerIndex) {
+  getInitialState: function() {
 
-  },
-  getInitialState:function(){
+    // windowWidth: window.innerWidth
     return {
-      imgsArrangeArr:[
-       /* {
-          pos:{
-            left:0,
-            top:0
-          }
-        }*/
-      ]
-    }
-  },
-  ComponentDidMount: function(){
-    //拿到舞台的大小
-    var stageDOM = this.refs.stage,
-      stageW = stageDOM.scrollWidth,
-      stageH = stageDOM.scrollHeight,
-      halfStageW = Math.ceil(stageW / 2),
-      halfStageH = Math.ceil(stageH / 2);
+      width:window.innerWidth,
+      height:window.innerHeight,
+      largeHeader:window.innerHeight,
+      animateHeader:true
+     
 
-    //拿到imgFigure的大小
-    // var imgFigureDOM = ReactDOM.findDOMNode(this.refs.imgFigure0),
-    var imgFigureDOM = this.refs.imgFigure0.refs.figure,
-      imgW = imgFigureDOM.scrollWidth,
-      imgH = imgFigureDOM.scrollWidth,
-      halfImgW = Math.ceil(imgW / 2),
-      halfImgH = Math.ceil(imgH / 2);
 
-    //计算中心图片的位置点
-    this.Constant.centerPos = {
-      left: halfStageW - halfImgW,
-      top: halfStageH- halfImgH
     };
+  },
 
-    //计算左侧，右侧区域图片排布位置的取值范围
-    this.Constant.hPosRange.leftSecX[0] = -halfImgW;
-    this.Constant.hPosRange.leftSecX[1] = halfStageW - halfImgW * 3;
-    this.Constant.hPosRange.rightSecX[0] = halfStageW + halfImgW;
-    this.Constant.hPosRange.rightSecX[1] = stageW - halfImgW;
-    this.Constant.hPosRange.y[0] = -halfImgH;
-    this.Constant.hPosRange.y[1] = stageH - halfImgH;
+  handleResize: function(e) {
+   // this.setState({windowWidth: window.innerWidth});
 
-    //计算上侧区域图片排布位置的取值范围
-    this.Constant.vPosRange.topY[0] = -halfImgH;
-    this.Constant.vPosRange.topY[1] = halfStageH - halfImgH * 3;
-    this.Constant.vPosRange.x[0] = halfStageW - imgW;
-    this.Constant.vPosRange.x[1] = halfStageW;
 
-    this.rearrange(0);
+   this.setState({windowWidth: window.innerWidth});
 
   },
+  scrollCheck:function(e){
+    //this.setState({windowWidth: window.innerWidth});
+    let Sets = this.state;
+    document.body.scrollTop > Sets.height ? Sets.animateHeader = false: Sets.animateHeader = true;
+  },
+  componentDidMount: function() {
+    window.addEventListener('resize', this.handleResize);
+    window.addEventListener('scroll', this.scrollCheck);
+
+    this.updateCanvas();
+  },
+  updateCanvas() {
+        
+  },   
+  componentWillUnmount: function() {
+    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener('scroll', this.scrollCheck);
+
+
+
+  },
+
   render: function() {
-    var contorllerUnits = [],
-        imgFigures = [];
+    //return <div>Current window width: {this.state.windowWidth}</div>;
 
-         imageDatas.forEach(function (value, index) {
+    // let ctxs = ctx.getContext('2d');
 
-          imgFigures.push(<ImgFigure data = {value} key={'imgFigures'+index}/>);
-
-        }.bind(this));
-
-
-        return (
-          <section className="stage">
-          	<section className="img-sec">
-          	   {imgFigures}
-          	</section>
-          	<nav className="contorller-nav">
-              {contorllerUnits}
-          	</nav>
-          </section>
-        );
+     return (
+        <div className="container demo-2">
+          <div className="content">
+            <div className="large-header" style={{height:this.state.height}} >
+              <div className="demo-div" style={{width:this.state.width,height:this.state.height}}></div>
+              <span className="main-title"><a href="2.html">Spirit</a></span>
+             
+            </div>
+          </div>
+        </div>
+      );
   }
 });
-
-GalleryByReactApp.defaultProps = {
-};
 
 export default GalleryByReactApp;
